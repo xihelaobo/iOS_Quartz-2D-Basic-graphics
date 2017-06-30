@@ -55,7 +55,8 @@
     //封闭路径
     CGContextClosePath(context);
     
-    /*4.设置线段样式
+    /*
+     4.设置线段样式
      phase:虚线开始的位置
      lengths:虚线长度间隔 lengths值为｛10, 20, 10｝，则表示先绘制10个点，跳过20个点，绘制10个点，跳过10个点，再绘制20个点，如此反复
      lengths的值｛10,10｝表示先绘制10个点，再跳过10个点，如此反复
@@ -93,10 +94,10 @@
     //上面的绘图方式未免显得有些麻烦，其实Core Graphics 内部对创建对象添加到上下文这两步操作进行了封装，可以一步完成。另外前面也说过UIKit内部其实封装了一些以“UI”开头的方法帮助大家进行图形绘制。就拿前面的例子来说我们改进一些绘制方法
     
     //绘制路径(相当于前面创建路径并添加路径到图形上下文两步操作)
-    CGContextMoveToPoint(context, 0, rect.origin.y + 200);
-    CGContextAddLineToPoint(context, 50, rect.origin.y + 300);
-    CGContextAddLineToPoint(context, [UIScreen mainScreen].bounds.size.width, rect.origin.y + 300);
-    CGContextAddLineToPoint(context, [UIScreen mainScreen].bounds.size.width - 50, rect.origin.y + 200);
+    CGContextMoveToPoint(context, 0, rect.origin.y + 120);
+    CGContextAddLineToPoint(context, 50, rect.origin.y + 220);
+    CGContextAddLineToPoint(context, [UIScreen mainScreen].bounds.size.width, rect.origin.y + 220);
+    CGContextAddLineToPoint(context, [UIScreen mainScreen].bounds.size.width - 50, rect.origin.y + 120);
     
     //封闭路径:直接调用路径封闭方法
     CGContextClosePath(context);
@@ -112,7 +113,7 @@
     
     
     //画椭圆(加阴影)
-    CGContextAddEllipseInRect(context, CGRectMake(0, 350, 300, 200));
+    CGContextAddEllipseInRect(context, CGRectMake(0, 250, 300, 150));
     
     [[UIColor redColor] setFill];
     
@@ -121,6 +122,25 @@
     CGContextClosePath(context);
     
     CGContextDrawPath(context, kCGPathFillStroke);
+    
+    //绘制弧形
+    /*添加弧形对象
+     x:中心点x坐标
+     y:中心点y坐标
+     radius:半径
+     startAngle:起始弧度
+     endAngle:终止弧度
+     closewise:是否逆时针绘制，0则顺时针绘制
+     */
+    CGContextAddArc(context, [UIScreen mainScreen].bounds.size.width / 2, 550, 100, 0.0, -M_PI_2, 0);
+    
+    CGContextSetShadow(context, CGSizeMake(0, 0), 0);
+    
+    [[UIColor blueColor] set];
+    
+    CGContextDrawPath(context, kCGPathFillStroke);
+    
+    //注:矩形就不列出来了   方法都是一样的大家可以尝试一下
 }
 
 @end
