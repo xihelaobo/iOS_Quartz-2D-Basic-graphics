@@ -52,6 +52,9 @@
     CGContextSetLineCap(context, kCGLineCapRound);//设置顶点样式
     CGContextSetLineJoin(context, kCGLineJoinRound);//设置连接点样式
     
+    //封闭路径
+    CGContextClosePath(context);
+    
     /*4.设置线段样式
      phase:虚线开始的位置
      lengths:虚线长度间隔 lengths值为｛10, 20, 10｝，则表示先绘制10个点，跳过20个点，绘制10个点，跳过10个点，再绘制20个点，如此反复
@@ -82,6 +85,32 @@
     
     //6.释放对象
     CGPathRelease(path);
+    
+    
+    //----------------------------简化绘图方式-----------------------
+    
+    
+    //上面的绘图方式未免显得有些麻烦，其实Core Graphics 内部对创建对象添加到上下文这两步操作进行了封装，可以一步完成。另外前面也说过UIKit内部其实封装了一些以“UI”开头的方法帮助大家进行图形绘制。就拿前面的例子来说我们改进一些绘制方法
+    
+    //绘制路径(相当于前面创建路径并添加路径到图形上下文两步操作)
+    CGContextMoveToPoint(context, 0, rect.origin.y + 200);
+    CGContextAddLineToPoint(context, 50, rect.origin.y + 300);
+    CGContextAddLineToPoint(context, [UIScreen mainScreen].bounds.size.width, rect.origin.y + 300);
+    CGContextAddLineToPoint(context, [UIScreen mainScreen].bounds.size.width - 50, rect.origin.y + 200);
+    
+    //封闭路径:直接调用路径封闭方法
+    CGContextClosePath(context);
+    
+    //设置图形上下文属性
+    [[UIColor yellowColor] setFill];
+    [[UIColor blueColor] setStroke];
+    CGContextSetLineWidth(context, 0);
+    CGContextSetShadow(context, CGSizeMake(0, 0), 0);
+    
+    //开始绘制
+    CGContextDrawPath(context, kCGPathFillStroke);
+    
+    
 }
 
 @end
