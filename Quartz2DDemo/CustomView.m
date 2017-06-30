@@ -111,6 +111,16 @@
     CGContextDrawPath(context, kCGPathFillStroke);
     
     
+    //画椭圆(加阴影)
+    CGContextAddEllipseInRect(context, CGRectMake(0, 350, 300, 200));
+    
+    [[UIColor redColor] setFill];
+    
+    CGContextSetShadowWithColor(context, CGSizeMake(20, 30), 30, [UIColor yellowColor].CGColor);
+    
+    CGContextClosePath(context);
+    
+    CGContextDrawPath(context, kCGPathFillStroke);
 }
 
 @end
